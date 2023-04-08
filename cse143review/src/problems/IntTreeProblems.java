@@ -36,8 +36,19 @@ public class IntTreeProblems {
      * Removes all leaf nodes from the given tree.
      */
     public static void removeLeaves(IntTree tree) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        tree.overallRoot = removeLeaves(tree.overallRoot);
+    }
+
+    private static IntTreeNode removeLeaves(IntTreeNode root) {
+        if (root != null) {
+            if (root.left == null && root.right == null) {
+                return null;
+            } else {
+                root.left = removeLeaves(root.left);
+                root.right = removeLeaves(root.right);
+            }
+        }
+        return root;
     }
 
     /**
