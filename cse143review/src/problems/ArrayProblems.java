@@ -14,7 +14,11 @@ public class ArrayProblems {
      * Always starts with '[' and ends with ']'; elements are separated by ',' and a space.
      */
     public static String toString(int[] array) {
-        // TODO replace this with your code
+        String result = "[";
+        for (int i = 0; i < array.length - 1; i++) {
+            result += array[i] + ", ";
+        }
+        result += array[array.length - 1] + "]";
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
