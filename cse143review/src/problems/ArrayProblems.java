@@ -19,7 +19,6 @@ public class ArrayProblems {
             result += array[i] + ", ";
         }
         result += array[array.length - 1] + "]";
-        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     /**
