@@ -15,10 +15,15 @@ public class ArrayProblems {
      */
     public static String toString(int[] array) {
         String result = "[";
-        for (int i = 0; i < array.length - 1; i++) {
-            result += array[i] + ", ";
+        if (array.length > 0) {
+            for (int i = 0; i < array.length - 1; i++) {
+                result += array[i] + ", ";
+            }
+            result += array[array.length - 1] + "]";
+        } else {
+            result += "]";
         }
-        result += array[array.length - 1] + "]";
+        return result;
     }
 
     /**
