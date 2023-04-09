@@ -54,9 +54,30 @@ public class LinkedIntListProblems {
      * Returns a list consisting of the integers of a followed by the integers
      * of n. Does not modify items of A or B.
      */
+    /*
+    given 2 lists, a and b
+    create new list with all of a at beginning and all of list b at the end
+    iterate thru all of intlist a
+        copy data at every single node into a new node
+
+    while curr.next != null
+     */
     public static LinkedIntList concatenate(LinkedIntList a, LinkedIntList b) {
-        // Hint: you'll need to use the 'new' keyword to construct new objects.
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (a.front != null) {
+            LinkedIntList result = new LinkedIntList(a.front.data);
+            ListNode current = result.front;
+            ListNode tempA = a.front;
+            while (tempA.next != null) {
+                current.next = new ListNode(tempA.next.data);
+                current = current.next;
+                tempA = tempA.next;
+            }
+            current.next = b.front;
+            return result;
+        } else if (b != null) {
+            return b;
+        } else {
+            return null;
+        }
     }
 }
