@@ -31,8 +31,11 @@ public class ArrayProblems {
      * Does not modify the input array.
      */
     public static int[] reverse(int[] array) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int[] result = new int[array.length];
+        for (int i = array.length - 1; i > -1; i--) {
+            result[array.length - i - 1] = array[i];
+        }
+        return result;
     }
 
     /**
