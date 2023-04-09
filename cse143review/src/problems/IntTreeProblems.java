@@ -28,9 +28,18 @@ public class IntTreeProblems {
      * (The root node is treated as having depth 1.)
      */
     public static int depthSum(IntTree tree) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        int depth = 1;
+        return depthSum(depth, tree.overallRoot);
     }
+
+    private static int depthSum(int depth, IntTreeNode root) {
+        if (root != null) {
+            return depth * root.data + depthSum(depth + 1, root.left) + depthSum(depth + 1, root.right);
+        } else {
+            return 0;
+        }
+    }
+
 
     /**
      * Removes all leaf nodes from the given tree.
@@ -56,7 +65,6 @@ public class IntTreeProblems {
      * (The resulting tree is still a BST.)
      */
     public static void trim(IntTree tree, int min, int max) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+
     }
 }
