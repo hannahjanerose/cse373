@@ -22,8 +22,11 @@ public class LinkedIntListProblems {
      * Reverses the 3 elements in the `LinkedIntList` (assume there are exactly 3 elements).
      */
     public static void reverse3(LinkedIntList list) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        list.front.next.next.next = list.front;
+        list.front = list.front.next.next;
+        list.front.next.next.next = list.front.next;
+        list.front.next = list.front.next.next;
+        list.front.next.next.next = null;
     }
 
     /**
