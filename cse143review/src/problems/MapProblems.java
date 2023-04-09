@@ -3,7 +3,6 @@ package problems;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.Objects;
 
 /**
  * See the spec on the website for example behavior.
