@@ -65,6 +65,21 @@ public class IntTreeProblems {
      * (The resulting tree is still a BST.)
      */
     public static void trim(IntTree tree, int min, int max) {
+        tree.overallRoot = trim(tree.overallRoot, min, max);
+    }
 
+    private static IntTreeNode trim(IntTreeNode root, int min, int max) {
+        if (root == null) {
+            return null;
+        }
+        if (root.data < min) {
+            return trim(root.right, min, max);
+        } else if (root.data > max) {
+            return trim(root.left, min, max);
+        } else {
+            root.left = trim(root.left, min, max);
+            root.right = trim(root.right, min, max);
+            return root;
+        }
     }
 }
