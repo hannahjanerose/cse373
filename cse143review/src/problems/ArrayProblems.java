@@ -42,7 +42,12 @@ public class ArrayProblems {
      * Rotates the values in the array to the right.
      */
     public static void rotateRight(int[] array) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (array.length > 0) {
+            int end = array[array.length - 1];
+            for (int i = array.length - 1; i > 0; i--) {
+                array[i] = array[i - 1];
+            }
+            array[0] = end;
+        }
     }
 }
