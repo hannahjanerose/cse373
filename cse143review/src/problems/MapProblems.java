@@ -32,7 +32,7 @@ public class MapProblems {
     public static Map<String, Integer> intersect(Map<String, Integer> m1, Map<String, Integer> m2) {
         Map<String, Integer> result = new HashMap<>();
         for (String key : m1.keySet()) {
-            if (m2.containsKey(key) && Objects.equals(m2.get(key), m1.get(key))) {
+            if (m2.containsKey(key) && m2.get(key) == m1.get(key)) {
                 result.put(key, m1.get(key));
             }
         }
