@@ -33,8 +33,21 @@ public class LinkedIntListProblems {
      * Moves the first element of the input list to the back of the list.
      */
     public static void firstToLast(LinkedIntList list) {
-        // TODO replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (list.front != null) {
+            if (list.front.next != null) {
+                ListNode temp = list.front;
+                ListNode temp2 = list.front.next;
+                while (temp.next != null) {
+                    temp = temp.next;
+                }
+                temp.next = list.front;
+                temp.next.next = null;
+                list.front = temp2;
+            }
+
+        }
+
+
     }
 
     /**
