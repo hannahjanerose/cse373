@@ -13,13 +13,25 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
 
     public LinkedDeque() {
         size = 0;
-        // TODO: replace this with your code
+        front.prev = null;
+        front.next = back;
+        back.next = null;
+        back.prev = front;
     }
 
     public void addFirst(T item) {
+        Node<T> newNode = new Node<T>(item);
+        if (size == 0) {
+            front.next = newNode;
+            newNode.prev = front;
+            newNode.next = back;
+            back.prev = newNode;
+        } else {
+            newNode.next = front.next;
+            front.next = newNode;
+            newNode.prev = front;
+        }
         size += 1;
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     public void addLast(T item) {
