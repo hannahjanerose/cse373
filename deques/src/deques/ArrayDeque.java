@@ -44,8 +44,8 @@ public class ArrayDeque<T> extends AbstractDeque<T> {
         if (size == data.length) {
             resize(data.length * 2);
         }
-        data[back] = item;
         back = increment(back, data.length);
+        data[back] = item;
         size += 1;
     }
 
@@ -53,9 +53,9 @@ public class ArrayDeque<T> extends AbstractDeque<T> {
         if (size == 0) {
             return null;
         }
-        front = increment(front, data.length);
         T result = data[front];
         data[front] = null;
+        front = increment(front, data.length);
         size -= 1;
         if (needsDownsize()) {
             resize(data.length / 2);
