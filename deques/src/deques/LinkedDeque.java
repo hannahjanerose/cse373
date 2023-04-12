@@ -37,9 +37,15 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
     }
 
     public void addLast(T item) {
+        if (size == 0) {
+            addFirst(item);
+        } else {
+            Node<T> newNode = new Node<T>(item);
+            newNode.prev = back.prev;
+            back.prev = newNode;
+            newNode.next = back;
+        }
         size += 1;
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     public T removeFirst() {
