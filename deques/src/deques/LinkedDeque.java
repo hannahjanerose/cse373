@@ -13,6 +13,8 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
 
     public LinkedDeque() {
         size = 0;
+        // initialize front and back nodes
+        // check constructors for the node class to figure out how to initialize the fields
         front.prev = null;
         front.next = back;
         back.next = null;
