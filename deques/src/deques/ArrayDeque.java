@@ -67,8 +67,8 @@ public class ArrayDeque<T> extends AbstractDeque<T> {
         if (size == 0) {
             return null;
         }
-        T result = data[back];
         back = decrement(back, data.length);
+        T result = data[back];
         data[back] = null;
         size -= 1;
         if (needsDownsize()) {
