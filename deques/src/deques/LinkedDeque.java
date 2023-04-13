@@ -52,8 +52,12 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         if (size == 0) {
             return null;
         }
+        Node<T> first = front.next;
+        front.next = first.next;
+        first.next = null;
+        first.prev = null;
         size -= 1;
-
+        return first.value;
     }
 
     public T removeLast() {
