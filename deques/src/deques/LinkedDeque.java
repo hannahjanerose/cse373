@@ -13,16 +13,16 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
 
     public LinkedDeque() {
         size = 0;
+        front = new Node<>(null);
+        back = new Node<>(null);
+        front.next = back;
+        back.prev = front;
         // initialize front and back nodes
         // check constructors for the node class to figure out how to initialize the fields
-        front.prev = null;
-        front.next = back;
-        back.next = null;
-        back.prev = front;
     }
 
     public void addFirst(T item) {
-        Node<T> newNode = new Node<T>(item);
+        Node<T> newNode = new Node<>(item);
         if (size == 0) {
             front.next = newNode;
             newNode.prev = front;
@@ -40,7 +40,7 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         if (size == 0) {
             addFirst(item);
         } else {
-            Node<T> newNode = new Node<T>(item);
+            Node<T> newNode = new Node<>(item);
             newNode.prev = back.prev;
             back.prev = newNode;
             newNode.next = back;
@@ -53,8 +53,7 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
             return null;
         }
         size -= 1;
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+
     }
 
     public T removeLast() {
