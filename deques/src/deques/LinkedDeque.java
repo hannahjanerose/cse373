@@ -52,11 +52,12 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         if (size == 0) {
             return null;
         }
+        size -= 1;
         Node<T> first = front.next;
         front.next = first.next;
         first.next = null;
         first.prev = null;
-        size -= 1;
+
         return first.value;
     }
 
@@ -65,8 +66,12 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
             return null;
         }
         size -= 1;
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        Node<T> last = back.prev;
+        back.prev = back.prev.prev;
+        back.prev.next = back;
+        last.next = null;
+        last.prev = null;
+        return last.value;
     }
 
     public T get(int index) {
