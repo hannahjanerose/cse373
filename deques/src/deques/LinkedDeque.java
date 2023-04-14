@@ -41,11 +41,6 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         if (size == 0) {
             addFirst(item);
         } else {
-            /*Node<T> newNode = new Node<>(item);
-            newNode.prev = back.prev;
-            back.prev = newNode;
-            newNode.next = back;
-            newNode.prev.next = newNode;*/
             Node<T> newNode = new Node<>(item);
             newNode.prev = back.prev;
             back.prev = newNode;
@@ -78,7 +73,6 @@ public class LinkedDeque<T> extends AbstractDeque<T> {
         Node<T> last = back.prev;
         back.prev = back.prev.prev;
         last.prev.next = last.next;
-
         last.next = null;
         last.prev = null;
         return last.value;
