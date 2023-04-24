@@ -9,8 +9,8 @@ import java.util.Objects;
  * @see Map
  */
 public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
-    // TODO: define a reasonable default value for the following field
-    private static final int DEFAULT_INITIAL_CAPACITY = 0;
+    private int size;
+    private static final int DEFAULT_INITIAL_CAPACITY = 10;
     /*
     Warning:
     You may not rename this field or change its type.
@@ -35,8 +35,6 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
      */
     public ArrayMap(int initialCapacity) {
         this.entries = this.createArrayOfEntries(initialCapacity);
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     /**
@@ -64,14 +62,40 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public V get(Object key) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        Iterator<Entry<K, V>> itr = this.iterator();
+        while (itr.hasNext()) {
+            Entry<K, V> entry = itr.next();
+            if (entry != null) {
+                K thisKey = entry.getKey();
+                if (Objects.equals(thisKey, key)) {
+                    return entry.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     @Override
     public V put(K key, V value) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        Iterator<Entry<K, V>> itr = this.iterator();
+        while (itr.hasNext()) {
+            Entry<K, V> entry = itr.next();
+            if (entry != null) {
+                if (Objects.equals(entry.getKey(), key)) {
+                    //check if value is not null???
+                    V oldValue = entry.getValue();
+                    if (oldValue != value) {
+                        entry.setValue(value);
+                    }
+                    return oldValue;
+                }
+            }
+        }
+        SimpleEntry<K, V> newEntry = new SimpleEntry<>(key, value);
+        this.entries[size] = newEntry;
+        size++;
+
+        return null;
     }
 
     @Override
@@ -104,13 +128,6 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
         return new ArrayMapIterator<>(this.entries);
     }
 
-    // TODO: after you implement the iterator, remove this toString implementation
-    // Doing so will give you a better string representation for assertion errors the debugger.
-    @Override
-    public String toString() {
-        return super.toString();
-    }
-
     private static class ArrayMapIterator<K, V> implements Iterator<Map.Entry<K, V>> {
         private final SimpleEntry<K, V>[] entries;
         private int position;
@@ -127,8 +144,9 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
         @Override
         public Map.Entry<K, V> next() {
-            // TODO: replace this with your code
-            throw new UnsupportedOperationException("Not implemented yet.");
+            Map.Entry<K, V> entry = entries[position];
+            position++;
+            return entry;
         }
     }
 }
