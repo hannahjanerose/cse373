@@ -2,6 +2,7 @@ package maps;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * @see AbstractIterableMap
@@ -93,8 +94,7 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public int size() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return size;
     }
 
     @Override
@@ -113,7 +113,8 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
     private static class ArrayMapIterator<K, V> implements Iterator<Map.Entry<K, V>> {
         private final SimpleEntry<K, V>[] entries;
-        // You may add more fields and constructor parameters
+        private int position;
+
 
         public ArrayMapIterator(SimpleEntry<K, V>[] entries) {
             this.entries = entries;
@@ -121,8 +122,7 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
         @Override
         public boolean hasNext() {
-            // TODO: replace this with your code
-            throw new UnsupportedOperationException("Not implemented yet.");
+            return this.entries[position + 1] != null;
         }
 
         @Override
