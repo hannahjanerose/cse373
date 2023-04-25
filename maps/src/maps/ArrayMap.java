@@ -93,6 +93,9 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
         }
         if (size == entries.length) {
             SimpleEntry<K, V>[] newEntries = createArrayOfEntries(size * 2);
+            for (int i = 0; i < size; i++) {
+                newEntries[i] = entries[i];
+            }
             entries = newEntries;
         }
         SimpleEntry<K, V> newEntry = new SimpleEntry<>(key, value);
@@ -111,7 +114,7 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
                     if (size > 1) {
                         SimpleEntry<K, V> lastEntry = entries[size - 1];
                         entries[i] = lastEntry;
-                        lastEntry = null;
+                        entries[size - 1] = null;
                     } else {
                         entries[i] = null;
                     }
