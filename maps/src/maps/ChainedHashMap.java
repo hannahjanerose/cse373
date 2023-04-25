@@ -9,9 +9,9 @@ import java.util.Map;
  */
 public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     // TODO: define reasonable default values for each of the following three fields
-    private static final double DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD = 0;
+    private static final double DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD = 0.75;
     private static final int DEFAULT_INITIAL_CHAIN_COUNT = 0;
-    private static final int DEFAULT_INITIAL_CHAIN_CAPACITY = 0;
+    private static final int DEFAULT_INITIAL_CHAIN_CAPACITY = 3;
 
     /*
     Warning:
