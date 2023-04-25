@@ -129,6 +129,7 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
     @Override
     public void clear() {
         SimpleEntry<K, V>[] newEntries = this.createArrayOfEntries(size);
+        size = 0;
     }
 
     @Override
