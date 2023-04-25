@@ -113,8 +113,16 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public boolean containsKey(Object key) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        Iterator<Entry<K, V>> itr = this.iterator();
+        while (itr.hasNext()) {
+            Entry<K, V> entry = itr.next();
+            if (entry != null) {
+                if (Objects.equals(entry.getKey(), key)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
