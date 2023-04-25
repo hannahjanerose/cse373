@@ -92,6 +92,10 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
                 }
             }
         }
+        if (size == entries.length) {
+            SimpleEntry<K, V>[] newEntries = createArrayOfEntries(size * 2);
+            entries = newEntries;
+        }
         SimpleEntry<K, V> newEntry = new SimpleEntry<>(key, value);
         this.entries[size] = newEntry;
         size++;
@@ -101,8 +105,23 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public V remove(Object key) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        for (int i = 0; i < size; i++) {
+            if (entries[i] != null) { //this is what i changed
+                if (Objects.equals(entries[i].getKey(), key)) {
+                    SimpleEntry<K, V> entryRemoved = entries[i];
+                    if (size > 1) {
+                        SimpleEntry<K, V> lastEntry = entries[size - 1];
+                        entries[i] = lastEntry;
+                        lastEntry = null;
+                    } else {
+                        entries[i] = null;
+                    }
+                    size--;
+                    return entryRemoved.getValue();
+                }
+            }
+        }
+        return null;
     }
 
     @Override
