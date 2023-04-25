@@ -83,7 +83,6 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
             Entry<K, V> entry = itr.next();
             if (entry != null) {
                 if (Objects.equals(entry.getKey(), key)) {
-                    //check if value is not null???
                     V oldValue = entry.getValue();
                     if (oldValue != value) {
                         entry.setValue(value);
@@ -126,8 +125,7 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public void clear() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        SimpleEntry<K, V>[] newEntries = this.createArrayOfEntries(size);
     }
 
     @Override
