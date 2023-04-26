@@ -24,10 +24,9 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
      */
     AbstractIterableMap<K, V>[] chains;
     private int size; // number of K,V pairs in the Map
-    private int chainsInUse; // number of non-empty chains
-    private int totalChains; // capacity of array of chains
-    private double lambda; // load factor threshold (double)(chainsInUse / totalChains)
-    // does casting as a double work in this case
+    private double resizingLoadFactorThreshold;
+    private int chainInitialCapacity;
+
 
     // You're encouraged to add extra fields (and helper methods) though!
 
@@ -49,10 +48,10 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
      *                             Must be > 0.
      */
     public ChainedHashMap(double resizingLoadFactorThreshold, int initialChainCount, int chainInitialCapacity) {
-        lambda = resizingLoadFactorThreshold;
-        totalChains = initialChainCount;
-        // use other params to instantiate chains using ArrayMap
-        // should we use iterator to make the chains?
+        this.resizingLoadFactorThreshold = resizingLoadFactorThreshold;
+        this.chains = createArrayOfChains(initialChainCount);
+        this.chainInitialCapacity = chainInitialCapacity;
+        this.size = 0;
 
     }
 
@@ -124,35 +123,33 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         return new ChainedHashMapIterator<>(this.chains);
     }
 
-    // TODO: after you implement the iterator, remove this toString implementation
-    // Doing so will give you a better string representation for assertion errors the debugger.
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 
     /*
     See the assignment webpage for tips and restrictions on implementing this iterator.
      */
     private static class ChainedHashMapIterator<K, V> implements Iterator<Map.Entry<K, V>> {
-        private AbstractIterableMap<K, V>[] chains;
-        private int arrayIndex;
-        private int currentChain; // the current index of the chain we are looking at
-        // You may add more fields and constructor parameters
+        private AbstractIterableMap<K, V>[] chains; // the hash table itself
+        private int index; // keeps track of the bin we are in, traverse hash table
+        private Iterator<Map.Entry<K, V>> iterator;
 
         public ChainedHashMapIterator(AbstractIterableMap<K, V>[] chains) {
             this.chains = chains;
-            this.currentChain = 0;
-            this.arrayIndex = 0;
+            this.index = 0;
+            iterator = null;
         }
 
+        // Returns true if the iteration has more elements.
+        // (In other words, returns true if next() would return an
+        // element rather than throwing an exception.)
         @Override
         public boolean hasNext() {
-            while (chains[currentChain] == null) {
-                currentChain++;
+            if (chains == null || index == chains.totalChains) {
+
             }
         }
 
+        // Returns the next element in the iteration.
+        // Throw a NoSuchElementException if you are out of elements.
         @Override
         public Map.Entry<K, V> next() {
             if (!hasNext()) {
@@ -164,10 +161,10 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
                         go to next item in chain, return item
                         position ++
 
-            while(chains[currentChain] == null) {
-                currentChain++;
+            while(chains[index] == null) {
+                index++;
             } // skipping past null values to get to next non-null value
-            return chains[currentChain];
+            return chains[index];
             // this will iterate thru the external structure but we need to be able to iterate thru the ArrayMap too
             // how to iterate through actual ArrayMap?
 
@@ -176,14 +173,14 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
 
              */
             //check if its null first
-            Iterator<Entry<K, V>> itr = chains[currentChain].iterator();
+            Iterator<Entry<K, V>> itr = chains[index].iterator();
             if (itr.hasNext()) {
 
             }
             Map.Entry<K, V> entry = itr.next();
-            if (currentChain < chains.length - 1) {
-                if (chains[currentChain] == null) {
-                    currentChain++;
+            if (index < chains.length - 1) {
+                if (chains[index] == null) {
+                    index++;
                 } else {
                     itr.next();
                 }
@@ -193,8 +190,8 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         }
         // Each index in the array of chains is null if and only if that chain has no entries.
         // index HAS to change to null when it is cleared of all entries
-        // The currentChain field of the iterator always references the current chain being iterated through
+        // The index field of the iterator always references the current chain being iterated through
         // (the chain which contains the next entry that next will return).
-        // The currentChain field is null after the iterator has been exhausted of all entries.
+        // The index field is null after the iterator has been exhausted of all entries.
     }
 }
