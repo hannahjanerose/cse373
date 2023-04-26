@@ -183,23 +183,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            /* if chains [i] is null:
-                    go to next chain
-                    else:
-                        go to next item in chain, return item
-                        position ++
-
-            while(chains[index] == null) {
-                index++;
-            } // skipping past null values to get to next non-null value
-            return chains[index];
-            // this will iterate thru the external structure but we need to be able to iterate thru the ArrayMap too
-            // how to iterate through actual ArrayMap?
-
-
-
-
-             */
             //check if its null first
             Iterator<Entry<K, V>> itr = chains[index].iterator();
             if (itr.hasNext()) {
