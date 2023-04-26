@@ -192,7 +192,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
             }
             Map.Entry<K, V> entry = iterator.next();
             return entry;
-            // return next element in iteration
         }
         // Each index in the array of chains is null if and only if that chain has no entries.
         // index HAS to change to null when it is cleared of all entries
