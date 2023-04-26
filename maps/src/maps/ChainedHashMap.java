@@ -11,9 +11,11 @@ import java.util.NoSuchElementException;
 public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     private static final double DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD = 0.75; // chainsInUse / chainCount;
     private static final int DEFAULT_INITIAL_CHAIN_COUNT = 10; // in parameters, it says this must be > 0.
-    // I think "initial chain count" means the size of the hash map, so maybe we should have it be like 10.
-    // even if chainCount is 10, the references can be null, so chainCount is just the capacity of the hashMap
-    private static final int DEFAULT_INITIAL_CHAIN_CAPACITY = 3;
+    /*
+    I think "initial chain count" means the size of the hash map, so maybe we should have it be like 10.
+    even if chainCount is 10, the references can be null, so chainCount is just the capacity of the hashMap
+     */
+    private static final int DEFAULT_INITIAL_CHAIN_CAPACITY = 5; // changed this to be slightly bigger
 
     /*
     Warning:
@@ -22,9 +24,10 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
      */
     AbstractIterableMap<K, V>[] chains;
     private int size; // number of K,V pairs in the Map
-    private int chainsInUse;
-    private int chainCount;
-    private double loadFactor;
+    private int chainsInUse; // number of non-empty chains
+    private int totalChains; // capacity of array of chains
+    private double lambda; // load factor threshold (double)(chainsInUse / totalChains)
+    // does casting as a double work in this case
 
 
     // You're encouraged to add extra fields (and helper methods) though!
@@ -47,9 +50,9 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
      *                             Must be > 0.
      */
     public ChainedHashMap(double resizingLoadFactorThreshold, int initialChainCount, int chainInitialCapacity) {
-        loadFactor = resizingLoadFactorThreshold;
-        chainCount = initialChainCount;
-        // use other params to instantiate chains using arraymap
+        lambda = resizingLoadFactorThreshold;
+        totalChains = initialChainCount;
+        // use other params to instantiate chains using ArrayMap
         // should we use iterator to make the chains?
 
     }
