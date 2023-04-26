@@ -176,16 +176,16 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
 
              */
             //check if its null first
-            Iterator<Entry<K, V>> arrayItr = chains[hashIndex].iterator();
-            if (arrayItr.hasNext()) {
+            Iterator<Entry<K, V>> itr = chains[currentChain].iterator();
+            if (itr.hasNext()) {
 
             }
-            Map.Entry<K, V> entry = arrayItr.next();
-            if (hashIndex < chains.length - 1) {
-                if (chains[hashIndex] == null) {
-                    hashIndex++;
+            Map.Entry<K, V> entry = itr.next();
+            if (currentChain < chains.length - 1) {
+                if (chains[currentChain] == null) {
+                    currentChain++;
                 } else {
-                    arrayItr.next();
+                    itr.next();
                 }
             }
             return entry;
