@@ -2,6 +2,7 @@ package maps;
 
 import java.util.Iterator;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 /**
  * @see AbstractIterableMap
@@ -9,9 +10,9 @@ import java.util.Map;
  */
 public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     // TODO: define reasonable default values for each of the following three fields
-    private static final double DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD = 0;
+    private static final double DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD = 0.75;
     private static final int DEFAULT_INITIAL_CHAIN_COUNT = 0;
-    private static final int DEFAULT_INITIAL_CHAIN_CAPACITY = 0;
+    private static final int DEFAULT_INITIAL_CHAIN_CAPACITY = 3;
 
     /*
     Warning:
@@ -124,22 +125,52 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
      */
     private static class ChainedHashMapIterator<K, V> implements Iterator<Map.Entry<K, V>> {
         private AbstractIterableMap<K, V>[] chains;
+        private int hashIndex;
+        private int arrayIndex;
         // You may add more fields and constructor parameters
 
         public ChainedHashMapIterator(AbstractIterableMap<K, V>[] chains) {
             this.chains = chains;
+            this.hashIndex = 0;
+            this.arrayIndex = 0;
         }
 
         @Override
         public boolean hasNext() {
-            // TODO: replace this with your code
-            throw new UnsupportedOperationException("Not implemented yet.");
+
         }
 
         @Override
         public Map.Entry<K, V> next() {
-            // TODO: replace this with your code
-            throw new UnsupportedOperationException("Not implemented yet.");
+            if (!hasNext()) {
+                throw new NoSuchElementException("LIST IS EMPTY");
+            }
+            /* if chains [i] is null:
+                    go to next chain
+                    else:
+                        go to next item in chain, return item
+                        position ++
+             */
+            //check if its null first
+            Iterator<Entry<K, V>> arrayItr = chains[hashIndex].iterator();
+            if (arrayItr.hasNext()) {
+
+            }
+            Map.Entry<K, V> entry = arrayItr.next();
+            if (hashIndex < chains.length - 1) {
+                if (chains[hashIndex] == null) {
+                    hashIndex++;
+                } else {
+                    arrayItr.next();
+                }
+            }
+            return entry;
+            // return next element in iteration
         }
+        // Each index in the array of chains is null if and only if that chain has no entries.
+        // index HAS to change to null when it is cleared of all entries
+        // The currentChain field of the iterator always references the current chain being iterated through
+        // (the chain which contains the next entry that next will return).
+        // The currentChain field is null after the iterator has been exhausted of all entries.
     }
 }
