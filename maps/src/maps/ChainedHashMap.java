@@ -9,9 +9,10 @@ import java.util.NoSuchElementException;
  * @see Map
  */
 public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
-    // TODO: define reasonable default values for each of the following three fields
-    private static final double DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD = 0.75;
-    private static final int DEFAULT_INITIAL_CHAIN_COUNT = 0;
+    private static final double DEFAULT_RESIZING_LOAD_FACTOR_THRESHOLD = 0.75; // chainsInUse / chainCount;
+    private static final int DEFAULT_INITIAL_CHAIN_COUNT = 10; // in parameters, it says this must be > 0.
+    // I think "initial chain count" means the size of the hash map, so maybe we should have it be like 10.
+    // even if chainCount is 10, the references can be null, so chainCount is just the capacity of the hashMap
     private static final int DEFAULT_INITIAL_CHAIN_CAPACITY = 3;
 
     /*
@@ -20,6 +21,11 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     We will be inspecting it in our secret tests.
      */
     AbstractIterableMap<K, V>[] chains;
+    private int size; // number of K,V pairs in the Map
+    private int chainsInUse;
+    private int chainCount;
+    private double loadFactor;
+
 
     // You're encouraged to add extra fields (and helper methods) though!
 
@@ -41,8 +47,11 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
      *                             Must be > 0.
      */
     public ChainedHashMap(double resizingLoadFactorThreshold, int initialChainCount, int chainInitialCapacity) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        loadFactor = resizingLoadFactorThreshold;
+        chainCount = initialChainCount;
+        // use other params to instantiate chains using arraymap
+        // should we use iterator to make the chains?
+
     }
 
     /**
@@ -143,7 +152,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         @Override
         public Map.Entry<K, V> next() {
             if (!hasNext()) {
-                throw new NoSuchElementException("LIST IS EMPTY");
+                throw new NoSuchElementException();
             }
             /* if chains [i] is null:
                     go to next chain
