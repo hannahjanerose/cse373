@@ -29,7 +29,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     private double lambda; // load factor threshold (double)(chainsInUse / totalChains)
     // does casting as a double work in this case
 
-
     // You're encouraged to add extra fields (and helper methods) though!
 
     /**
@@ -137,19 +136,21 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
      */
     private static class ChainedHashMapIterator<K, V> implements Iterator<Map.Entry<K, V>> {
         private AbstractIterableMap<K, V>[] chains;
-        private int hashIndex;
         private int arrayIndex;
+        private int currentChain; // the current index of the chain we are looking at
         // You may add more fields and constructor parameters
 
         public ChainedHashMapIterator(AbstractIterableMap<K, V>[] chains) {
             this.chains = chains;
-            this.hashIndex = 0;
+            this.currentChain = 0;
             this.arrayIndex = 0;
         }
 
         @Override
         public boolean hasNext() {
-
+            while (chains[currentChain] == null) {
+                currentChain++;
+            }
         }
 
         @Override
@@ -162,6 +163,17 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
                     else:
                         go to next item in chain, return item
                         position ++
+
+            while(chains[currentChain] == null) {
+                currentChain++;
+            } // skipping past null values to get to next non-null value
+            return chains[currentChain];
+            // this will iterate thru the external structure but we need to be able to iterate thru the ArrayMap too
+            // how to iterate through actual ArrayMap?
+
+
+
+
              */
             //check if its null first
             Iterator<Entry<K, V>> arrayItr = chains[hashIndex].iterator();
