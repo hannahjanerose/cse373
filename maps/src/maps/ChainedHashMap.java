@@ -155,17 +155,15 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
             // in here we know that we are not at the end of the hash table
             // we know that there is something in the hash table ??
             // traversing thru all null values to get to the next non-null bucket
-            boolean bool = itrHelper();
+
             // at this point we have reached a non-empty bucket (will start here if we were already in one)
             iterator = chains[index].iterator();
             if (!iterator.hasNext()) {
-                bool = itrHelper();
-                if (!bool) {
+                if (!itrHelper()) {
                     return false;
                 }
             }
             return true;
-
         }
 
         private boolean itrHelper() {
