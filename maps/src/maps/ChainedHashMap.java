@@ -143,9 +143,39 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         // element rather than throwing an exception.)
         @Override
         public boolean hasNext() {
-            if (chains == null || index == chains.totalChains) {
+            // check if there is another element
+            // two situations
+            // first check over the hash table
+            // then check over the array map
 
+            // if we are at the last bin and its empty then there is nothing next
+            if (chains == null || index == chains.length) {
+                return false;
             }
+            // in here we know that we are not at the end of the hash table
+            // we know that there is something in the hash table ??
+            // traversing thru all null values to get to the next non-null bucket
+            boolean bool = itrHelper();
+            // at this point we have reached a non-empty bucket (will start here if we were already in one)
+            iterator = chains[index].iterator();
+            if (!iterator.hasNext()) {
+                bool = itrHelper();
+                if (!bool) {
+                    return false;
+                }
+            }
+            return true;
+
+        }
+
+        private boolean itrHelper() {
+            while (chains[index] == null) {
+                index++;
+                if (index == chains.length) {
+                    return false;
+                }
+            }
+            return true;
         }
 
         // Returns the next element in the iteration.
