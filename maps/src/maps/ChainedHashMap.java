@@ -155,18 +155,18 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
             // in here we know that we are not at the end of the hash table
             // we know that there is something in the hash table ??
             // traversing thru all null values to get to the next non-null bucket
-            itrHelper();
+            iteratorHelper();
             // at this point we have reached a non-empty bucket (will start here if we were already in one)
             iterator = chains[index].iterator();
             if (!iterator.hasNext()) {
-                if (!itrHelper()) {
+                if (!iteratorHelper()) {
                     return false;
                 }
             }
             return true;
         }
 
-        private boolean itrHelper() {
+        private boolean iteratorHelper() {
             while (chains[index] == null) {
                 index++;
                 if (index == chains.length) {
@@ -184,18 +184,13 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
                 throw new NoSuchElementException();
             }
             //check if its null first
-            Iterator<Entry<K, V>> itr = chains[index].iterator();
-            if (itr.hasNext()) {
-
+            iterator = chains[index].iterator();
+            if (iterator.hasNext()) {
+                return iterator.next();
+            } else {
+                iteratorHelper();
             }
-            Map.Entry<K, V> entry = itr.next();
-            if (index < chains.length - 1) {
-                if (chains[index] == null) {
-                    index++;
-                } else {
-                    itr.next();
-                }
-            }
+            Map.Entry<K, V> entry = iterator.next();
             return entry;
             // return next element in iteration
         }
