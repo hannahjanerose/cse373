@@ -23,7 +23,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     We will be inspecting it in our secret tests.
      */
     AbstractIterableMap<K, V>[] chains;
-    private int size; // number of K,V pairs in the Map
+    private int size; // number of buckets being used
     private double resizingLoadFactorThreshold;
     private int chainInitialCapacity;
 
@@ -91,6 +91,11 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     public V put(K key, V value) {
         // TODO: replace this with your code
         throw new UnsupportedOperationException("Not implemented yet.");
+    }
+
+    private AbstractIterableMap<K, V>[] hashHelper(AbstractIterableMap<K, V>[] original,
+                                                   AbstractIterableMap<K, V>[] result) {
+
     }
 
     @Override
