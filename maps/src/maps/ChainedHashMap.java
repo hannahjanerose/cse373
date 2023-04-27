@@ -85,12 +85,42 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     public V get(Object key) {
         // TODO: replace this with your code
         throw new UnsupportedOperationException("Not implemented yet.");
+
     }
 
     @Override
     public V put(K key, V value) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        // if key received is null, hashcode == 0
+        if ((double) size / chains.length >= resizingLoadFactorThreshold) {
+            // resize!!! AND REHASH
+            AbstractIterableMap<K, V>[] newChains = createArrayOfChains(chains.length * 2);
+            chains = hashHelper(chains, newChains); //rehashing all values to chains
+        }
+        int hashCode = 0;
+        if (key != null) {
+            hashCode = Math.abs(key.hashCode());
+        }
+        // resize if hashCode is larger than size of hash map??
+        if (chains[hashCode] == null) {
+            chains[hashCode] = createChain(chainInitialCapacity);
+            size++;
+        }
+        if (chains[hashCode].containsKey(key)) {
+            return chains[hashCode].get(key);
+        }
+        chains[hashCode].put(key, value);
+        return null;
+        /*
+
+
+        if key already exists: replace corresponding value
+        check if underlying arrayMap is full
+        call hashcode function
+         */
+        //navigate to right chain
+        //use arrayMap put
+        //hashcode, (math.abs)
+        //return previous value, null if no mapping
     }
 
     private AbstractIterableMap<K, V>[] hashHelper(AbstractIterableMap<K, V>[] original,
@@ -108,6 +138,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     public void clear() {
         // TODO: replace this with your code
         throw new UnsupportedOperationException("Not implemented yet.");
+        // when chain has no more entries, index there becomes null
     }
 
     @Override
@@ -159,7 +190,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
             }
             // in here we know that we are not at the end of the hash table
             // we know that there is something in the hash table ??
-            // traversing thru all null values to get to the next non-null bucket
+            // traversing through all null values to get to the next non-null bucket
             iteratorHelper();
             // at this point we have reached a non-empty bucket (will start here if we were already in one)
             iterator = chains[index].iterator();
