@@ -166,11 +166,12 @@ public class ArrayMap<K, V> extends AbstractIterableMap<K, V> {
 
         public ArrayMapIterator(SimpleEntry<K, V>[] entries) {
             this.entries = entries;
+            this.position = 0;
         }
 
         @Override
         public boolean hasNext() {
-            return position < entries.length && this.entries[position] != null;
+            return (position < entries.length && this.entries[position] != null);
         }
 
         @Override
