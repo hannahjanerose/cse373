@@ -79,7 +79,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
 
     @Override
     public V get(Object key) {
-
         if (!containsKey(key)) {
             return null;
         }
@@ -87,7 +86,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         if (key != null) {
             hashCode = Math.abs(key.hashCode() % chains.length);
         }
-
         return chains[hashCode].get(key);
     }
 
@@ -104,23 +102,15 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         }
         if (chains[hashCode] == null) {
             chains[hashCode] = createChain(chainInitialCapacity);
-
         }
         V result = chains[hashCode].put(key, value);
         if (result == null) {
             size++;
         }
-
         return result;
     }
 
     private AbstractIterableMap<K, V>[] hashHelper() {
-        /*
-        for each key
-        get new hashcode
-        hash to that location in the new hashmap
-        return the new hashmap
-         */
         AbstractIterableMap<K, V>[] result = createArrayOfChains(chains.length * 2);
         for (Map.Entry<K, V> entry : this) {
             K key = entry.getKey();
@@ -131,12 +121,10 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
             }
             if (result[hashCode] == null) {
                 result[hashCode] = createChain(chainInitialCapacity);
-
             }
             result[hashCode].put(key, value);
         }
         return result;
-
     }
 
     @Override
@@ -150,7 +138,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
                 size--;
             }
         }
-        // when chain has no more entries, index there becomes null
         return value;
     }
 
@@ -206,7 +193,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         // element rather than throwing an exception.)
         @Override
         public boolean hasNext() {
-            // check the next bin
             if (chains == null) {
                 return false;
 
@@ -229,7 +215,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
                 index++;
                 return hasNext();
             }
-
             return true;
         }
 
@@ -237,26 +222,14 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         // 	Throw a NoSuchElementException if you are out of elements.
         @Override
         public Map.Entry<K, V> next() {
-            // we want to be checking the next entry in the hash table
-
             // if there is no next array map then throw an exception
             if (!hasNext()) {
                 throw new NoSuchElementException();
             }
-            // if the iterator is pointing at nothing
-            // set the iterator to the index of chains
             if (iterator == null) {
                 iterator = chains[index].iterator();
             }
             return iterator.next();
-
-
         }
-        // INVARIANTS:
-        // Each index in the array of chains is null if and only if that chain has no entries.
-        // index HAS to change to null when it is cleared of all entries
-        // The index field of the iterator always references the current chain being iterated through
-        // (the chain which contains the next entry that next will return).
-        // The index field is null after the iterator has been exhausted of all entries.
     }
 }
