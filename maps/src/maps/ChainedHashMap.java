@@ -104,14 +104,14 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         }
         if (chains[hashCode] == null) {
             chains[hashCode] = createChain(chainInitialCapacity);
+
+        }
+        V result = chains[hashCode].put(key, value);
+        if (result == null) {
             size++;
         }
 
-        // if (chains[hashCode].containsKey(key)) {
-        //     return chains[hashCode].get(key);
-        // }
-
-        return chains[hashCode].put(key, value);
+        return result;
     }
 
     private AbstractIterableMap<K, V>[] hashHelper() {
@@ -125,15 +125,15 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         for (Map.Entry<K, V> entry : this) {
             K key = entry.getKey();
             V value = entry.getValue();
-            // result.put(key, value);
             int hashCode = 0;
             if (key != null) {
                 hashCode = Math.abs(key.hashCode() % result.length);
             }
             if (result[hashCode] == null) {
                 result[hashCode] = createChain(chainInitialCapacity);
-                result[hashCode].put(key, value);
+
             }
+            result[hashCode].put(key, value);
         }
         return result;
 
@@ -221,7 +221,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
                 if (index == chains.length) {
                     return false;
                 }
-                // iterator = chains[index].iterator();
                 return chains[index] != null;
 
             }
@@ -233,59 +232,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
 
             return true;
         }
-        // if we are at the last bin and its empty then there is nothing next
-        // if (chains == null || index == chains.length) {
-        //     return false;
-        // }
-
-        // in here we know that we are not at the end of the hash table
-        // we know that there is something in the hash table ??
-        // traversing through all null values to get to the next non-null bucket
-
-            /* if (iteratorHelper() == false) {
-                return false;
-            } */
-        //   if (iterator == null) {
-
-        //    }
-        //   iteratorHelper();
-        // at this point we have reached a non-empty bucket (will start here if we were already in one)
-        // iterator = chains[index].iterator();
-        // if (iterator != null && !iterator.hasNext()) {
-        //     iterator = null;
-        //     index++;
-        // }
-        // if (iterator == null) {
-        //     // iteratorHelper();
-        //     while (chains[index] == null && index < chains.length-1) {
-        //         index++;
-        //     }
-        //     if (index == chains.length) {
-        //         return false;
-        //     }
-        //     iterator = chains[index].iterator();
-        //     return chains[index] != null;
-        // }
-        //         // if (!iteratorHelper()) {
-        //         //     return false;
-        //         // }
-        //
-        //
-        // return true;
-        //}
-
-        // private void iteratorHelper() {
-        //     // get this to tell us where we are
-        //     while (chains[index] == null && index < chains.length-1) {
-        //         index++;
-        //     }
-        //         // if (index == chains.length) {
-        //         //     return false;
-        //         // }
-        //         // iterator = chains[index].iterator();
-        //         // return chains[index] != null;
-        // }
-
 
         // 	Returns the next element in the iteration.
         // 	Throw a NoSuchElementException if you are out of elements.
@@ -303,16 +249,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
                 iterator = chains[index].iterator();
             }
             return iterator.next();
-            //check if its null first
-            // only create an iterator if we have reached a new chain
-            // iterator = chains[index].iterator();
-            // if (iterator.hasNext()) {
-            //     return iterator.next();
-            // } else {
-            //     iteratorHelper();
-            // }
-            // Map.Entry<K, V> entry = iterator.next();
-            // return entry;
 
 
         }
