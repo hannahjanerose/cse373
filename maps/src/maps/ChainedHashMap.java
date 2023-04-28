@@ -135,9 +135,10 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
             value = chains[hashCode].remove(key);
             if (chains[hashCode].size() == 0) {
                 chains[hashCode] = null;
-                size--;
             }
+            size--;
         }
+
         return value;
     }
 
