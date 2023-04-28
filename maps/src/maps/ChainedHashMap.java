@@ -106,6 +106,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
             chains[hashCode] = createChain(chainInitialCapacity);
             size++;
         }
+
         // if (chains[hashCode].containsKey(key)) {
         //     return chains[hashCode].get(key);
         // }
