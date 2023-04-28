@@ -102,18 +102,13 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
         if (key != null) {
             hashCode = Math.abs(key.hashCode() % chains.length);
         }
-        // resize if hashCode is larger than size of hash map??
         if (chains[hashCode] == null) {
             chains[hashCode] = createChain(chainInitialCapacity);
-            //size++;
+            size++;
         }
         // if (chains[hashCode].containsKey(key)) {
         //     return chains[hashCode].get(key);
         // }
-        if (chains[hashCode].put(key, value) == null) {
-            size++;
-            return null;
-        }
 
         return chains[hashCode].put(key, value);
     }
@@ -121,7 +116,6 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
     private AbstractIterableMap<K, V>[] hashHelper() {
         /*
         for each key
-            how to access keyset of the original hashmap?
         get new hashcode
         hash to that location in the new hashmap
         return the new hashmap
@@ -321,6 +315,7 @@ public class ChainedHashMap<K, V> extends AbstractIterableMap<K, V> {
 
 
         }
+        // INVARIANTS:
         // Each index in the array of chains is null if and only if that chain has no entries.
         // index HAS to change to null when it is cleared of all entries
         // The index field of the iterator always references the current chain being iterated through
