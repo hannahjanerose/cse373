@@ -2,6 +2,7 @@ package priorityqueues;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  * @see ExtrinsicMinPQ
@@ -11,7 +12,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     // We access these during grading to test your code.
     static final int START_INDEX = 1;
     List<PriorityNode<T>> items;
-    // TODO: add fields as necessary
+    private int size;
 
     /* check runtime of arraylist methods before using them!!!
     ArrayList Method Runtimes:
@@ -40,10 +41,14 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
 
     // Adds an item with the given priority value.
     // Must run in O(log n) time not including rare resize operation.
+    // PQ can only contain unique items!! 2 items can be assigned same priority value
+    // but there cannot be duplicate items.
     @Override
     public void add(T item, double priority) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        // if priority is less than the item with the lowest priority:
+            // this value is the new beginning of the arraylist
+        // otherwise :
+
     }
 
     // Returns true if the PQ contains the given item; false otherwise.
@@ -55,11 +60,14 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     }
 
     // Returns the item with least-valued priority.
+    // Throws NoSuchElementException if PQ is empty
     // Must run in O(log n) time
     @Override
     public T peekMin() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (items.isEmpty()) {
+            throw new NoSuchElementException();
+        }
+        return items.get(1).getItem();
     }
 
     // Removes and returns the item with least-valued priority.
@@ -74,15 +82,18 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     // Must run in O(log n) time
     @Override
     public void changePriority(T item, double priority) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        // find node to set
+        //.setPriority(priority);
     }
 
     // 	Returns the number of items in the PQ.
     // Must run in O(log n) time
     @Override
     public int size() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return items.size();
+    }
+
+    public boolean isEmpty() {
+        return items.isEmpty();
     }
 }
