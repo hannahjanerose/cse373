@@ -117,9 +117,13 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         // find node to set
         //.setPriority(priority);
         //THROWS NO SUCH ELEMENT EXCEPTION IF ITEM NOT PRESENT IN THE PQ
-        if (!contains(item)) {
+        // I worked on changePriority
+        // !contains(item)
+        if (locations.get(item) == null) {
             throw new NoSuchElementException();
         }
+        int index = locations.get(item);
+        items.get(index).setPriority(priority);
     }
 
     // 	Returns the number of items in the PQ.
