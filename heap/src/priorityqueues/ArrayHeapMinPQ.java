@@ -66,8 +66,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     // Must run in O(log n)
     @Override
     public boolean contains(T item) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        return locations.containsKey(item);
     }
 
     // Returns the item with least-valued priority.
@@ -96,6 +95,10 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     public void changePriority(T item, double priority) {
         // find node to set
         //.setPriority(priority);
+        //THROWS NO SUCH ELEMENT EXCEPTION IF ITEM NOT PRESENT IN THE PQ
+        if (!contains(item)) {
+            throw new NoSuchElementException();
+        }
     }
 
     // 	Returns the number of items in the PQ.
