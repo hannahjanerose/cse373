@@ -53,13 +53,25 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     // but there cannot be duplicate items.
     @Override
     public void add(T item, double priority) {
-        // if priority is less than the item with the lowest priority:
-        // this value is the new beginning of the arraylist
-        // otherwise :
-        if (item == null || !contains(item)) {
+        if (item == null || contains(item)) {
             throw new IllegalArgumentException();
         }
-
+        // add to next available spot
+        PriorityNode<T> element = new PriorityNode<>(item, priority);
+        items.add(element);
+        // element's index is now size - 1
+        locations.put(item, items.size() - 1);
+        int indexB = items.size() - 1;
+        int indexA = indexB / 2;
+        boolean percolate = true;
+        while (items.get(indexB).getPriority() < items.get(indexA).getPriority()) {
+            swap(indexA, indexB);
+            indexB = indexA;
+            if (indexA == 1) {
+                break;
+            }
+            indexA = indexA / 2;
+        }
     }
 
     // Returns true if the PQ contains the given item; false otherwise.
@@ -84,9 +96,13 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     // Must run in O(log n) time not including rare resize operation.
     @Override
     public T removeMin() {
-        if (items.isEmpty()) {
+        /* if (items.isEmpty()) {
             throw new NoSuchElementException();
-        }
+        } */
+        // TODO: replace this with your code
+        throw new UnsupportedOperationException("Not implemented yet.");
+
+
     }
 
     // Changes the priority of the given item.
