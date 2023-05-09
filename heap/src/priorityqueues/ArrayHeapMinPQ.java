@@ -43,8 +43,14 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
      * A helper method for swapping the items at two indices of the array heap.
      */
     private void swap(int a, int b) {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        // swap indexes
+        // update HashMap keys and values for those items
+        PriorityNode<T> itemA = items.get(a);
+        PriorityNode<T> itemB = items.get(b);
+        items.set(a, itemB);
+        items.set(b, itemA);
+        locations.put(itemA.getItem(), b);
+        locations.put(itemB.getItem(), a);
     }
 
     // Adds an item with the given priority value.
