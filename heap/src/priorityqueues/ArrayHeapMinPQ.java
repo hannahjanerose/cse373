@@ -3,7 +3,8 @@ package priorityqueues;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-
+import java.util.Map;
+import java.util.HashMap;
 /**
  * @see ExtrinsicMinPQ
  */
@@ -12,7 +13,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     // We access these during grading to test your code.
     static final int START_INDEX = 1;
     List<PriorityNode<T>> items;
-    private int size;
+    Map<T, Integer> locations;
 
     /* check runtime of arraylist methods before using them!!!
     ArrayList Method Runtimes:
@@ -22,10 +23,17 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         remove(): O(n)
      */
 
+    /* FINDING CHILDREN/PARENTS
+    leftChild(i) = 2i
+    rightChild(i) = 2i + 1
+    parent(i) = (i / 2)
+     */
+
 
     public ArrayHeapMinPQ() {
         items = new ArrayList<>();
-        // TODO: add code as necessary
+        locations = new HashMap<>();
+        // this works with empty starting arraylist
     }
 
     // Here's a method stub that may be useful. Feel free to change or remove it, if you wish.
@@ -46,8 +54,11 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     @Override
     public void add(T item, double priority) {
         // if priority is less than the item with the lowest priority:
-            // this value is the new beginning of the arraylist
+        // this value is the new beginning of the arraylist
         // otherwise :
+        if (item == null || !contains(item)) {
+            throw new IllegalArgumentException();
+        }
 
     }
 
@@ -74,8 +85,9 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     // Must run in O(log n) time not including rare resize operation.
     @Override
     public T removeMin() {
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        if (items.isEmpty()) {
+            throw new NoSuchElementException();
+        }
     }
 
     // Changes the priority of the given item.
