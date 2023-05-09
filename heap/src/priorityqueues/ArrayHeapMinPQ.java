@@ -42,6 +42,10 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     /**
      * A helper method for swapping the items at two indices of the array heap.
      */
+
+    // NEED A PERCOLATE UP AND PERCOLATE DOWN METHOD
+    // could call swap method in both and switch parameters depending on whether it is
+    // percolating up or down
     private void swap(int a, int b) {
         // swap indexes
         // update HashMap keys and values for those items
