@@ -69,7 +69,6 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         locations.put(item, items.size() - 1);
         int indexB = items.size() - 1;
         int indexA = indexB / 2;
-        boolean percolate = true;
         while (items.get(indexB).getPriority() < items.get(indexA).getPriority()) {
             swap(indexA, indexB);
             indexB = indexA;
