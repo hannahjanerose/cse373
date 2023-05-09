@@ -77,6 +77,10 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             }
             indexA = indexA / 2;
         }
+        //  if (indexA == 0) {
+        //       break;
+        //  }
+        //  indexA = (indexA - 1) / 2;
     }
 
     // Returns true if the PQ contains the given item; false otherwise.
