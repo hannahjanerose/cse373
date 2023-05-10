@@ -11,7 +11,7 @@ import java.util.HashMap;
 public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     // IMPORTANT: Do not rename these fields or change their visibility.
     // We access these during grading to test your code.
-    static final int START_INDEX = 1;
+    static final int START_INDEX = 0;
     List<PriorityNode<T>> items;
     Map<T, Integer> locations;
 
@@ -53,6 +53,10 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         locations.put(itemB.getItem(), a);
     }
 
+    private boolean checkPriority(int a, int b) {
+        return items.get(a).getPriority() < items.get(b).getPriority();
+    }
+
     // Adds an item with the given priority value.
     // Must run in O(log n) time not including rare resize operation.
     // PQ can only contain unique items!! 2 items can be assigned same priority value
@@ -68,19 +72,15 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         // element's index is now size - 1
         locations.put(item, items.size() - 1);
         int indexB = items.size() - 1;
-        int indexA = indexB / 2;
+        int indexA = (indexB - 1) / 2;
         while (items.get(indexB).getPriority() < items.get(indexA).getPriority()) {
             swap(indexA, indexB);
             indexB = indexA;
-            if (indexA == 1) {
+            if (indexA == 0) {
                 break;
             }
-            indexA = indexA / 2;
+            indexA = (indexA - 1) / 2;
         }
-        //  if (indexA == 0) {
-        //       break;
-        //  }
-        //  indexA = (indexA - 1) / 2;
     }
 
     // Returns true if the PQ contains the given item; false otherwise.
@@ -98,20 +98,51 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         if (items.isEmpty()) {
             throw new NoSuchElementException();
         }
-        return items.get(1).getItem();
+        return items.get(0).getItem();
+        // items.remove(items.get(items.size())); ?? removing item at the end
     }
 
     // Removes and returns the item with least-valued priority.
     // Must run in O(log n) time not including rare resize operation.
     @Override
     public T removeMin() {
-        /* if (items.isEmpty()) {
+        if (items.isEmpty()) {
             throw new NoSuchElementException();
-        } */
-        // TODO: replace this with your code
-        throw new UnsupportedOperationException("Not implemented yet.");
+        }
+        T removedItem = items.get(0).getItem();
+        locations.remove(removedItem);
+        items.set(0, items.get(items.size() - 1));
+        // does this remove from last index?
+        items.remove(items.size() - 1);
+        locations.put(items.get(0).getItem(), 0);
 
-
+        //PERCOLATE DOWN
+        int parent = 0;
+        int left = (parent * 2) + 1;
+        int right = (parent + 1) * 2;
+        while (left <= items.size() - 1 && size() > 1) {
+            if (right <= items.size() - 1) {
+                if (checkPriority(left, right) && checkPriority(left, parent)) {
+                    swap(parent, left);
+                    parent = left;
+                    left = (parent * 2) + 1;
+                    right = (parent + 1) * 2;
+                } else if (checkPriority(right, left) && checkPriority(right, parent)){
+                    // check priority, if size > 1
+                    swap(parent, right);
+                    parent = right;
+                    left = (parent * 2) + 1;
+                    right = (parent + 1) * 2;
+                }
+            }
+            // do i check if priority of parent here is still less than child?
+            // does this percolate have to go all the way down?
+            swap(parent, left);
+            parent = left;
+            left = (parent * 2) + 1;
+            right = (parent + 1) * 2;
+        }
+        return removedItem;
     }
 
     // Changes the priority of the given item.
@@ -128,6 +159,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         }
         int index = locations.get(item);
         items.get(index).setPriority(priority);
+        //percolate down or up compared to its parent
     }
 
     // 	Returns the number of items in the PQ.
