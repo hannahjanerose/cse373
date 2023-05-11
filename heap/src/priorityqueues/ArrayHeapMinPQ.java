@@ -61,6 +61,52 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         return items.get(a).getPriority() < items.get(b).getPriority();
     }
 
+    //fix parent, left, and right so only one node and can update the rest
+    private void percolateUp(int parent, int child) {
+        while (!checkPriority(parent, child)) {
+            swap(parent, child);
+            child = parent;
+            if (parent == 0) {
+                break;
+            }
+            parent = (parent - 1) / 2;
+        }
+    }
+
+    private void percolateDown(int parent, int left, int right) {
+        while (left <= items.size() - 1 && size() > 1) {
+            if (right <= items.size() - 1) { // if right exists
+                if (!checkPriority(left, right)) { // left is bigger than right
+                    if (!checkPriority(parent, right)) { // parent is bigger than right
+                        swap(parent, right); // swap
+                        parent = right;
+                        left = (parent * 2) + 1;
+                        right = (parent + 1) * 2;
+                    }
+                } else { // left is smaller than right
+                    if (!checkPriority(parent, left)) { // parent is bigger than left
+                        swap(parent, left); // swap
+                        parent = left;
+                        left = (parent * 2) + 1;
+                        right = (parent + 1) * 2;
+                    }
+                }
+            }
+            if (parent <= items.size() - 1 && left <= items.size() - 1) {
+                // parent or left could be out of bounds here??
+                if (!checkPriority(parent, left)) {
+                    swap(parent, left);
+                    // change all your indices and try percDown again
+                    parent = left;
+                    left = (parent * 2) + 1;
+                    right = (parent + 1) * 2;
+                } else { // parent is smaller than left so Im going to stop
+                    break;
+                }
+            }
+        }
+    }
+
     // Adds an item with the given priority value.
     // Must run in O(log n) time not including rare resize operation.
     // PQ can only contain unique items!! 2 items can be assigned same priority value
@@ -77,14 +123,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         locations.put(item, items.size() - 1);
         int indexB = items.size() - 1;
         int indexA = (indexB - 1) / 2;
-        while (items.get(indexB).getPriority() < items.get(indexA).getPriority()) {
-            swap(indexA, indexB);
-            indexB = indexA;
-            if (indexA == 0) {
-                break;
-            }
-            indexA = (indexA - 1) / 2;
-        }
+        percolateUp(indexA, indexB);
     }
 
     // Returns true if the PQ contains the given item; false otherwise.
@@ -114,38 +153,18 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
             throw new NoSuchElementException();
         }
         T removedItem = items.get(0).getItem();
-        locations.remove(removedItem);
-        items.set(0, items.get(items.size() - 1));
-        // does this remove from last index?
-        items.remove(items.size() - 1);
-        locations.put(items.get(0).getItem(), 0);
 
-        //PERCOLATE DOWN
+        swap(0, size() - 1);
+        items.remove(items.get(items.size() - 1));
+        locations.remove(removedItem);
+
+
+
         int parent = 0;
         int left = (parent * 2) + 1;
         int right = (parent + 1) * 2;
-        while (left <= items.size() - 1 && size() > 1) {
-            if (right <= items.size() - 1) {
-                if (checkPriority(left, right) && checkPriority(left, parent)) {
-                    swap(parent, left);
-                    parent = left;
-                    left = (parent * 2) + 1;
-                    right = (parent + 1) * 2;
-                } else if (checkPriority(right, left) && checkPriority(right, parent)){
-                    // check priority, if size > 1
-                    swap(parent, right);
-                    parent = right;
-                    left = (parent * 2) + 1;
-                    right = (parent + 1) * 2;
-                }
-            }
-            // do i check if priority of parent here is still less than child?
-            // does this percolate have to go all the way down?
-            swap(parent, left);
-            parent = left;
-            left = (parent * 2) + 1;
-            right = (parent + 1) * 2;
-        }
+        percolateDown(parent, left, right);
+
         return removedItem;
     }
 
@@ -163,8 +182,13 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         }
         int index = locations.get(item);
         items.get(index).setPriority(priority);
-        //percolate down or up compared to its parent
+        if (index != 0) {
+            percolateUp((index - 1) / 2, index);
+        }
+        percolateDown(index, (index * 2) + 1, (index + 1) * 2);
     }
+
+    //UPDATE items.size() TO SIZE()
 
     // 	Returns the number of items in the PQ.
     // Must run in O(log n) time
