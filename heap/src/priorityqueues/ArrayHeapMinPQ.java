@@ -92,7 +92,8 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
                     }
                 }
             }
-            if (parent <= items.size() - 1 && left <= items.size() - 1) {
+            //parent <= items.size() - 1?
+            if (left <= items.size() - 1) {
                 // parent or left could be out of bounds here??
                 if (!checkPriority(parent, left)) {
                     swap(parent, left);
@@ -120,8 +121,8 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
         PriorityNode<T> element = new PriorityNode<>(item, priority);
         items.add(element);
         // element's index is now size - 1
-        locations.put(item, items.size() - 1);
-        int indexB = items.size() - 1;
+        locations.put(item, size() - 1);
+        int indexB = size() - 1;
         int indexA = (indexB - 1) / 2;
         percolateUp(indexA, indexB);
     }
@@ -138,27 +139,24 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     // Must run in O(log n) time
     @Override
     public T peekMin() {
-        if (items.isEmpty()) {
+        if (size() == 0) {
             throw new NoSuchElementException();
         }
-        return items.get(0).getItem();
-        // items.remove(items.get(items.size())); ?? removing item at the end
+        return items.get(START_INDEX).getItem();
     }
 
     // Removes and returns the item with least-valued priority.
     // Must run in O(log n) time not including rare resize operation.
     @Override
     public T removeMin() {
-        if (items.isEmpty()) {
+        if (size() == 0) {
             throw new NoSuchElementException();
         }
-        T removedItem = items.get(0).getItem();
+        T removedItem = items.get(START_INDEX).getItem();
 
         swap(0, size() - 1);
-        items.remove(items.get(items.size() - 1));
+        items.remove(size() - 1);
         locations.remove(removedItem);
-
-
 
         int parent = 0;
         int left = (parent * 2) + 1;
@@ -173,18 +171,17 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     @Override
     public void changePriority(T item, double priority) {
         // find node to set
-        //.setPriority(priority);
-        //THROWS NO SUCH ELEMENT EXCEPTION IF ITEM NOT PRESENT IN THE PQ
+        // .setPriority(priority);
+        // THROWS NO SUCH ELEMENT EXCEPTION IF ITEM NOT PRESENT IN THE PQ
         // I worked on changePriority
         // !contains(item)
+        // locations.get(item) == null
         if (locations.get(item) == null) {
             throw new NoSuchElementException();
         }
         int index = locations.get(item);
         items.get(index).setPriority(priority);
-        if (index != 0) {
-            percolateUp((index - 1) / 2, index);
-        }
+        percolateUp((index - 1) / 2, index);
         percolateDown(index, (index * 2) + 1, (index + 1) * 2);
     }
 
