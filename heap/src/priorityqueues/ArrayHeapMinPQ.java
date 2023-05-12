@@ -76,6 +76,9 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
     private void percolateDown(int parent, int left, int right) {
         while (left <= items.size() - 1 && size() > 1) {
             if (right <= items.size() - 1) { // if right exists
+                if (checkPriority(parent, left) && checkPriority(parent, right)) {
+                    break;
+                }
                 if (!checkPriority(left, right)) { // left is bigger than right
                     if (!checkPriority(parent, right)) { // parent is bigger than right
                         swap(parent, right); // swap
@@ -91,9 +94,7 @@ public class ArrayHeapMinPQ<T> implements ExtrinsicMinPQ<T> {
                         right = (parent + 1) * 2;
                     }
                 }
-            }
-            //parent <= items.size() - 1?
-            if (left <= items.size() - 1) {
+            } else if (left <= items.size() - 1) {
                 // parent or left could be out of bounds here??
                 if (!checkPriority(parent, left)) {
                     swap(parent, left);
