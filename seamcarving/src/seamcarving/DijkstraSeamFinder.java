@@ -7,15 +7,11 @@ import graphs.shortestpaths.DijkstraShortestPathFinder;
 import graphs.shortestpaths.ShortestPath;
 import graphs.shortestpaths.ShortestPathFinder;
 
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 public class DijkstraSeamFinder implements SeamFinder {
-    // TODO: replace all 4 references to "Object" on the line below with whatever vertex type
-    //  you choose for your graph
     private final ShortestPathFinder<Graph<String, Edge<String>>, String, Edge<String>> pathFinder;
 
     // private class HorizGraph implements Graph<String, Edge<String>> {
@@ -45,13 +41,11 @@ public class DijkstraSeamFinder implements SeamFinder {
 
     @Override
     public List<Integer> findHorizontalSeam(double[][] energies) {
-        // TODO: replace this with your code
         throw new UnsupportedOperationException("Not implemented yet.");
     }
 
     @Override
     public List<Integer> findVerticalSeam(double[][] energies) {
-        // TODO: replace this with your code
         Collection<Edge<String>> edges = new ArrayList<Edge<String>>();
         String s = "s,s";
         String e = "e,e";
@@ -64,12 +58,12 @@ public class DijkstraSeamFinder implements SeamFinder {
                     edges.add(new Edge("" + (i-1) + "," + (j),   "" + (i) + "," + (j), energies[i][j]));
                     edges.add(new Edge("" + (i-1) + "," + (j+1), "" + (i) + "," + (j), energies[i][j]));
                 } else if (j == energies[i].length - 1) {
-                    edges.add(new Edge("" + (i-1) + "," + (j-1),"" + (i) + "," + (j), energies[i][j]));
+                    edges.add(new Edge("" + (i-1) + "," + (j-1), "" + (i) + "," + (j), energies[i][j]));
                     edges.add(new Edge("" + (i-1) + "," + (j),  "" + (i) + "," + (j), energies[i][j]));
                 } else {
-                    edges.add(new Edge("" + (i-1) + "," + (j-1),"" + (i) + "," + (j), energies[i][j]));
+                    edges.add(new Edge("" + (i-1) + "," + (j-1), "" + (i) + "," + (j), energies[i][j]));
                     edges.add(new Edge("" + (i-1) + "," + (j),  "" + (i) + "," + (j), energies[i][j]));
-                    edges.add(new Edge("" + (i-1) + "," + (j+1),"" + (i) + "," + (j), energies[i][j]));
+                    edges.add(new Edge("" + (i-1) + "," + (j+1), "" + (i) + "," + (j), energies[i][j]));
                 }
             }
         }
@@ -85,7 +79,8 @@ public class DijkstraSeamFinder implements SeamFinder {
 
         AdjacencyListUndirectedGraph<String, Edge<String>> g = new AdjacencyListUndirectedGraph<>(edges);
 
-        DijkstraShortestPathFinder<Graph<String, Edge<String>>, String, Edge<String>> dspf = new DijkstraShortestPathFinder();
+        DijkstraShortestPathFinder<Graph<String, Edge<String>>,
+            String, Edge<String>> dspf = new DijkstraShortestPathFinder();
         ShortestPath<String, Edge<String>> spt = dspf.findShortestPath(g, s, e);
         List<String> path = spt.vertices();
 
