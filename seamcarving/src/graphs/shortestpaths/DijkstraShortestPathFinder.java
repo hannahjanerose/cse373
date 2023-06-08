@@ -43,52 +43,60 @@ public class DijkstraShortestPathFinder<G extends Graph<V, E>, V, E extends Base
         Map<V, Double> distTo = new HashMap<>();
 
         distTo.put(start, 0.0);
+        priorityQueue.add(start, 1);
+
+        // while you haven't visited everything
         while (!priorityQueue.isEmpty()) {
-            V currentVertex = priorityQueue.removeMin();
-            if (Objects.equals(currentVertex, end)) {
+            V current = priorityQueue.removeMin();
+
+            // found end
+            if (Objects.equals(current, end)) {
                 break;
             }
-            known.add(currentVertex);
-            for (E edge: graph.outgoingEdgesFrom(currentVertex)) {
-                V edgeToVertex = edge.to();
-                if (!priorityQueue.contains(edgeToVertex) && !known.contains(edgeToVertex)) {
-                    priorityQueue.add(edgeToVertex, edge.weight());
+
+            known.add(current);
+            for (E edge: graph.outgoingEdgesFrom(current)) {
+                if (known.contains(edge.to())) {
+                    continue;
                 }
-                double oldDist;
-                if (distTo.containsKey(edgeToVertex)) {
-                    oldDist = distTo.get(edgeToVertex);
-                } else {
-                    oldDist = Double.POSITIVE_INFINITY;
-                }
-                double newDist = distTo.get(currentVertex) + edge.weight();
-                if (newDist < oldDist) {
-                    distTo.put(edgeToVertex, newDist);
-                    edgeTo.put(edgeToVertex, edge);
+
+                priorityQueue.add(edge.to(), edge.weight());
+
+                double oldDistToNew = distTo.getOrDefault(edge.to(), Double.POSITIVE_INFINITY);
+                double newDistToNew = distTo.get(current) + edge.weight();
+
+                if (newDistToNew < oldDistToNew) {
+                    distTo.put(edge.to(), newDistToNew);
+                    edgeTo.put(edge.to(), edge);
                 }
             }
         }
+
+        System.out.println(start);
+        System.out.println(end);
+        System.out.println(edgeTo);
         return edgeTo;
     }
 
     @Override
     protected ShortestPath<V, E> extractShortestPath(Map<V, E> spt, V start, V end) {
-        // return all the edges on spt from start to end
-        if (Objects.equals(start, end)) {
+        if (start.equals(end)) {
             return new ShortestPath.SingleVertex<>(start);
         }
+        // return all the edges on spt from start to end
+        if (!spt.containsKey(end)) {
+            return new ShortestPath.Failure<>();
+        }
+
+        // start and end must be connected
+        V current = end;
         ArrayList<E> listOfEdges = new ArrayList<>();
-        V vertex = end;
-        // Iterate from end to start each vertex, add edge to list
-        while (!vertex.equals(start)) {
-            E edge = spt.get(vertex);
-            listOfEdges.add(edge);
-            vertex = edge.from();
+        while (!current.equals(start)) {
+            E edgeToFollow = spt.get(current);
+            listOfEdges.add(0, edgeToFollow);
+            current = edgeToFollow.from();
         }
-        // Reverse array list into new list, then return new list
-        ArrayList<E> finalPath = new ArrayList<>();
-        for(int i = listOfEdges.size() - 1; i >= 0; i--) {
-            finalPath.add(listOfEdges.get(i));
-        }
-        return new ShortestPath.Success<>(finalPath);
+
+        return new ShortestPath.Success<>(listOfEdges);
     }
 }
